@@ -1,0 +1,10 @@
+# Go
+*.exe
+*.out
+*.test
+*.log
+*.env
+
+# IDE
+.vscode/
+.idea/
