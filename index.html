@@ -3,15 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles.css">
-    <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="./static/styles.css">
+    <script src="./static/script.js" defer></script>
     <title>hyperealist</title>
 </head>
 <body>
-    <header class="header">
+    <header class="header main">
         <a href="index.html" class="header-logo">
-            <img src="./icons/hyperrealist-logo.png" alt="hyperrealist logo" width="125" height="30">
+            <img src="./static/icons/hyperrealist-logo.png" alt="hyperealist logo" loading="lazy" width="125", height="25">
+        </a>
+        <nav header-nav>
+            <li class="header-list">
+                <a class="header-item" href="#main">Main</a>
+                <a class="header-item" href="#posts">Posts</a>
+                <a class="header-item" href="#contacts">Contacts</a>    
+            </li>
+        </nav>
+        <a href="#main" class="header-button">
+            <img src="./static/icons/home-svgrepo-com.svg" alt="" loading="lazy">
         </a>
     </header>
+    <main class="content">
+        <h1 class="visually-hidden">hyperealist</h1>
+        <section class="banner">
+            <div class="banner-motivation">
+                <p>act -- together</p>
+            </div>
+            <div class="banner-main">
+                <h2 class="banner-main-text title-big">Open the <br> B[ES]T</h2>
+                <img class="banner-main-image" src="./static/images/hyperrealist_banner_img.jpg" alt="hyperealist image" width="100" height="100">
+                <div class="banner-image-detail">
+                    <p>(H MUET) \IPɛʁEAlisT\</p>
+                    <p>Only the Best for You</p>
+                </div>
+            </div>
+            <div class="banner-motivation">
+                <p>create -- your story</p>
+            </div>
+        </section>
+
+    </main>
 </body>
 </html>

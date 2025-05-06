@@ -225,10 +225,175 @@
 
 :root{
     --background-color-dark:#000000;
+    --color-yellow:#EDF738;
     
     --padding-inline:89px;
+    --margin-inline:60px;
+
+    --transition-duration: 0.2s;
+
+    --font-family:'Inter';
+}
+
+a,
+button,
+input,
+textarea,
+svg * {
+    transition-duration: var(--transition-duration);
+}
+
+.visually-hidden{
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  border: 0 !important; 
+  padding: 0 !important;
+  white-space: nowrap !important;
+  clip-path: inset(100) !important;
+  clip: rect(0 0 0 0) !important;
+  overflow: hidden !important;
+}
+
+.title-big{
+  font-size: clamp(50px,5vw,80px);
+  letter-spacing: 0.1em;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5{
+  color: var(--color-yellow);
+  font-family: var(--font-family);
+}
+
+h1,h2{
+  font-weight: 900;
+  font-family: var(--font-family);
 }
 
 body{
     background-color: var(--background-color-dark);
+}
+
+section{
+  width: 97%;
+
+}
+
+header{
+  width: 97%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-inline: 30px;
+}
+
+
+.header-logo{
+  flex-shrink: 0;
+}
+
+.header-button{
+  height: 40px;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+
+.header-list{
+  display: flex;
+  column-gap: 100px;
+  margin-right: clamp(100px,8vw,120px);
+}
+
+.header-item{
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--color-yellow);
+  font-family: 'Inter';
+}
+
+.header-item:hover{
+  color: #ceb603;
+}
+
+
+.banner {
+  display: flex;
+  column-gap: clamp(250px,30vw,400px);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  margin-block: 40px;
+  margin-inline: 30px;
+}
+
+.banner-main-text {
+  position: relative;
+  z-index: 1;
+}
+
+.banner-main-text::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(300px,34.72vw,500px);
+  height: 400px;
+  transform: translate(-50%, -37%);
+  background: url(./images/banner-main-behind.png) center/contain no-repeat;
+  z-index: -1;
+}
+
+.banner-main-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-67%, 450%); 
+  z-index: 0;
+}
+
+
+.banner-image-detail{
+  font-size: 1.5em;
+  transform: translate(70%, 60%)
+}
+
+
+@media(max-width:1500px){
+  .banner-main-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-67%, 500%); 
+    z-index: 0;
+  }
+}
+
+@media(max-width:1204px){
+  .banner-main-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-67%, 300%); 
+    z-index: 0;
+  }
+
+  .banner-image-detail{
+    font-size: 1.5em;
+    transform: translate(70%, 20%)
+  }
+}
+
+@media(max-width:1000px){
+  .banner-main-image {
+    visibility: hidden;
+  }
 }
