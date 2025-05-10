@@ -379,9 +379,44 @@ header{
 }
 
 .posters{
+
+  height: 700px;
+  display: grid;
+  grid-template-columns: 1fr 6fr 1fr;
+  align-items: center;
+  justify-items: center;
+  margin-top: 100px;
+}
+
+.posters-slider a:not(a:first-child){
+  display: none;
+}
+
+.slide{
+  width: 1200px;
+  height: 700px;
+}
+
+.posters-button{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center ;
+  width: 80px;
+  height: 38px;   
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 2;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
   background-color: gray;
-  height: 900px;
-  padding-bottom: 20px;
+  border: none;
+  border-radius: 30px;
+}
+
+.posters-button:hover{
+  background-color: var(--color-yellow);
 }
 
 .contacts{
