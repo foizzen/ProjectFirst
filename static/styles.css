@@ -425,6 +425,12 @@ header{
   color: var(--color-yellow);
 }
 
+@media(max-width:1656px){
+  .banner-main-image {
+    transform: translate(-77%, 550%); 
+  }
+}
+
 
 @media(max-width:1500px){
   .banner-main-image {
@@ -438,6 +444,8 @@ header{
 
   }
 }
+
+
 
 @media(max-width:1425px){
   .banner-main-image {
