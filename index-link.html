@@ -3,9 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/link-styles.css">
     <title>Document</title>
 </head>
-<body>
-    
+<body> 
+    <div class="preloader-wave">
+        <div class="wave">
+            <span style="--i:1">L</span>
+            <span style="--i:2">o</span>
+            <span style="--i:3">a</span>
+            <span style="--i:4">d</span>
+            <span style="--i:5">i</span>
+            <span style="--i:6">n</span>
+            <span style="--i:7">g</span>
+            <span style="--i:8">.</span>
+            <span style="--i:9">.</span>
+            <span style="--i:10">.</span>
+        </div>
+    </div>
+    <script>
+    setTimeout(() => {
+        setTimeout(() => {
+            const preloader = document.querySelector('.preloader-wave');
+            preloader.style.transition = 'opacity 0.5s ease';
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                preloader.classList.add = 'visually-hidden';
+            }, 500);
+        }, 3000);})
+    </script>
+
+    <header>
+        <a href="index.html" class="header-logo">
+            <img src="./static/icons/Group-logo.svg" alt="hyperealist logo" loading="lazy" width="125", height="25">
+        </a>
+        <h1 class="game-name">
+            Grand Theft Auto VI
+        </h1>
+        <a href="index.html" class="header-button">
+            <img src="./static/icons/home-svgrepo-com.svg" alt="Home button" loading="lazy" width="40", height="40">
+        </a>
+    </header>
+    <main>
+        <div class="text-container">
+            <p class="main-text">Grand Theft Auto VI (GTA 6) is an upcoming action-adventure game developed by Rockstar Games. It is the latest installment in the critically acclaimed Grand Theft Auto series, known for its open-world gameplay and immersive storytelling. Set in a fictional version of Vice City (based on Miami), the game promises a vast and dynamic world, featuring both urban and rural environments. GTA 6 is expected to introduce new characters and a storyline centered around crime, betrayal, and power. The game will also feature enhanced graphics and a more detailed, interactive world compared to its predecessors. Although an official release date has not been confirmed, fans are eagerly anticipating its arrival, hoping for new innovations in gameplay and narrative depth.</p>
+        
+        </div>
+    </main>
 </body>
 </html>

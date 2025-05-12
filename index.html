@@ -9,8 +9,22 @@
 </head>
 <body>
     <header class="header">
+    <div class="preloader-wave">
+        <div class="wave">
+            <span style="--i:1">L</span>
+            <span style="--i:2">o</span>
+            <span style="--i:3">a</span>
+            <span style="--i:4">d</span>
+            <span style="--i:5">i</span>
+            <span style="--i:6">n</span>
+            <span style="--i:7">g</span>
+            <span style="--i:8">.</span>
+            <span style="--i:9">.</span>
+            <span style="--i:10">.</span>
+        </div>
+    </div>
         <a href="index.html" class="header-logo">
-            <img src="./static/icons/hyperrealist-logo.png" alt="hyperealist logo" loading="lazy" width="125", height="25">
+            <img src="./static/icons/Group-logo.svg" alt="hyperealist logo" loading="lazy" width="125", height="25">
         </a>
         <nav header-nav>
             <li class="header-list">
@@ -22,6 +36,18 @@
         <a href="#main" class="header-button">
             <img src="./static/icons/home-svgrepo-com.svg" alt="" loading="lazy">
         </a>
+    <script>
+        setTimeout(() => {
+            setTimeout(() => {
+                const preloader = document.querySelector('.preloader-wave');
+                preloader.style.transition = 'opacity 0.5s ease';
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    preloader.classList.add = 'visually-hidden';
+                }, 500);
+            }, 3000);})
+        </script>
     </header>
     <main class="content " id="main">
         <h1 class="visually-hidden">hyperealist</h1>
@@ -46,21 +72,7 @@
             <button class="posters-button previous-button">previos</button>
             <div class="posters-slider">
 
-                <a href="" class="slide">
-                    <img src="./static/images/Gta-6.webp" alt="GTA 6 link" loading="lazy"> 
-                </a>
-                <a href="" class="slide">
-                    <img src="./static/images/Mafua_TheOldCountry.jpg" alt="Mafia the old Country link" loading="lazy">
-                </a>
-                <a href="" class="slide">
-                    <img src="./static/images/Assassins_Creed_shadows.avif" alt="Assassins Creed Shadows link" loading="lazy" > 
-                </a>
-                <a href="" class="slide">
-                    <img src="./static/images/ghost_of_yotei.jpg" alt="Ghost of Yotei link" loading="lazy"> 
-                </a>
-
             </div>
-
             <script>
                 const result = document.querySelector('.posters-slider')
 
@@ -88,6 +100,7 @@
                     
                 })
             </script>
+            
             <button class="posters-button next-button">next</button>
         </section>
         <footer class="contacts" id="Contacts">
