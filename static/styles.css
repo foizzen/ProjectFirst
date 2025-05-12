@@ -137,8 +137,7 @@
  /**
    Плавный скролл
   */
- html,
- :has(:target) {
+ html:has(:target) {
    scroll-behavior: smooth;
  }
  
@@ -386,6 +385,7 @@ header{
   align-items: center;
   justify-items: center;
   margin-top: 100px;
+  margin-inline:30px;
 }
 
 .posters-slider a:not(a:first-child){

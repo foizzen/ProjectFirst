@@ -1,0 +1,36 @@
+{
+posts:
+    [{id:'1',title:'a title',views:100},{id:'2',title:'another title',views:200},{id:'3',title:'blablabla',views:0},{id:'15',title:'12',views:0}],
+
+comments:
+[{id:'1',text:'a comment about post 1',postId:'1'},{id:'2',text:'another comment about post 1',postId:'1'}],
+
+profile:
+    [{
+        href:'./',
+        clas:'slide',
+        src: './static/images/Gta-6.webp',
+        alt: 'GTA 6 link',
+    },
+    {
+        href:'./',
+        clas:'slide',
+        src: './static/images/Mafua_TheOldCountry.jpg',
+        alt: 'Mafia the old Country link',
+    },
+    {
+        href:'./',
+        clas:'slide',
+        src: './static/images/Assassins_Creed_shadows.avif',
+        alt: 'Assassins Creed link',
+    },
+    {
+        href:'./',
+        clas:'slide',
+        src: './static/images/ghost_of_yotei.jpg',
+        alt: 'Ghost of Yotei link',
+    },
+    ]
+    
+
+}
