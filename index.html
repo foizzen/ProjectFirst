@@ -83,7 +83,9 @@
                 })
                 .catch ((error) =>{
                     console.log('error:', error)
-
+                    
+                    result.innerHTML = `<h1>Oops, something wrong.<br>Please reload the site</h1>`
+                    
                 })
             </script>
             <button class="posters-button next-button">next</button>
