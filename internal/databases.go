@@ -18,7 +18,7 @@ type Post struct {
 	Title        string
 	Post_content string
 	Image_url    sql.NullString
-	Views        int
+	Waitings     int
 	Created_at   time.Time
 	Author_id    int `json:"-"`
 }
@@ -83,7 +83,7 @@ func GetPost(db *sql.DB, post_id int) (*Post, error) {
 	defer rows.Close()
 	post := &Post{}
 	for rows.Next() {
-		err = rows.Scan(&post.AuthorName, &post.Id, &post.Title, &post.Post_content, &post.Image_url, &post.Views, &post.Created_at, &post.Author_id)
+		err = rows.Scan(&post.AuthorName, &post.Id, &post.Title, &post.Post_content, &post.Image_url, &post.Waitings, &post.Created_at, &post.Author_id)
 		if err != nil {
 			return nil, fmt.Errorf("error in Scan for params, id: %d -- %s", post_id, err)
 		}
@@ -91,18 +91,18 @@ func GetPost(db *sql.DB, post_id int) (*Post, error) {
 	return post, nil
 }
 
-// Return lim Posts with the most views
+// Return lim Posts with the most waitings
 func GetPostsWMV(db *sql.DB, lim int) ([]Post, error) {
 	var posts []Post
 	rows, err := db.Query(`SELECT U.username AS authorname, P.* 
-	FROM "Posts" AS P JOIN "Users" AS U ON P.author_id = U.id ORDER BY P.views DESC LIMIT $1`, lim)
+	FROM "Posts" AS P JOIN "Users" AS U ON P.author_id = U.id ORDER BY P.waitings DESC LIMIT $1`, lim)
 	if err != nil {
 		return nil, fmt.Errorf("can't get %d Posts, Server error: %s", lim, err)
 	}
 	defer rows.Close()
 	post := Post{}
 	for rows.Next() {
-		err = rows.Scan(&post.AuthorName, &post.Id, &post.Title, &post.Post_content, &post.Image_url, &post.Views, &post.Created_at, &post.Author_id)
+		err = rows.Scan(&post.AuthorName, &post.Id, &post.Title, &post.Post_content, &post.Image_url, &post.Waitings, &post.Created_at, &post.Author_id)
 		posts = append(posts, post)
 		if err != nil {
 			rows.Close()
@@ -132,9 +132,9 @@ func EditPost(db *sql.DB, post *Post) error {
 	return err
 }
 
-// Add +1 view to post
-func AddView(db *sql.DB, post_id int) error {
-	_, err := db.Exec(`UPDATE "Posts" SET views=views+1 WHERE id=$1`, post_id)
+// Add +1 waiter to post
+func AddWaiter(db *sql.DB, post_id int) error {
+	_, err := db.Exec(`UPDATE "Posts" SET waitings=waitings+1 WHERE id=$1`, post_id)
 	return err
 }
 
