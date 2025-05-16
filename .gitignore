@@ -5,6 +5,9 @@
 *.log
 *.env
 
+# Utils
+*.json5
+
 # IDE
 .vscode/
 .idea/
