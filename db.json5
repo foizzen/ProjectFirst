@@ -7,26 +7,22 @@ comments:
 
 profile:
     [{
-        href:'./',
-        clas:'slide',
+        href:'/index-link.html',
         src: './static/images/Gta-6.webp',
         alt: 'GTA 6 link',
     },
     {
-        href:'./',
-        clas:'slide',
+        href:'/index-link.html',
         src: './static/images/Mafua_TheOldCountry.jpg',
         alt: 'Mafia the old Country link',
     },
     {
-        href:'./',
-        clas:'slide',
+        href:'/index-link.html',
         src: './static/images/Assassins_Creed_shadows.avif',
         alt: 'Assassins Creed link',
     },
     {
-        href:'./',
-        clas:'slide',
+        href:'/index-link.html',
         src: './static/images/ghost_of_yotei.jpg',
         alt: 'Ghost of Yotei link',
     },

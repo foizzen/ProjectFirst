@@ -232,7 +232,30 @@
  svg * [fill] {fill: var(--color-yellow);}
  svg * [stroke] {stroke: var(--color-yellow);}
 
+.login-button {
+  padding: 1rem 2rem;
+  font-weight: 700;
+  background: rgb(255, 255, 255);
+  color: black;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  border-bottom: 2px solid #EDF738;
+  border-right: 2px solid #EDF738;
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  transition-duration: 1s;
+  transition-property: border-top, border-left, border-bottom, border-right,
+    box-shadow;
+}
 
+.login-button:hover {
+  border-top: 2px solid #EDF738;
+  border-left: 2px solid #EDF738;
+  border-bottom: 2px solid rgb(117, 160, 48);
+  border-right: 2px solid rgb(117, 160, 48);
+  box-shadow: rgba(67, 223, 98, 0.4) 5px 5px, rgba(38, 150, 54, 0.3)0px 10px,
+    rgba(25, 90, 28, 0.2) 15px 15px;
+}
 
 :root{
     --background-color-dark:#000000;
@@ -313,7 +336,7 @@ header{
   flex-shrink: 0;
 }
 
-.header-button{
+.header-login{
   height: 40px;
   aspect-ratio: 1;
   flex-shrink: 0;
@@ -342,6 +365,89 @@ header{
   color: #ceb603;
 }
 
+.pop_up{
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 80%);
+  z-index: 2;
+}
+
+.pop_up.is-active{
+  display: block;
+}
+
+.pop_up_close{
+  position: absolute;
+  top: 15px;
+  right:15px ;
+  color: white;
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.pop_up_container{
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.pop_up_body{
+  margin: auto;
+  width: 400px;
+  height: 450px;
+  background-color: #000;
+  border-radius: 15px;
+  text-align: center;
+  position: relative;
+  border: 2px solid yellowgreen;
+}
+
+.pop_up_form{
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.2em;
+  margin: 30px;
+  padding: 20px;
+}
+
+.field {
+display: flex;
+flex-direction: column;
+margin-block: 0;
+}
+
+.field input{
+  display: block;
+  background-color: #c9c0c0;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 18px;
+  
+}
+
+.field input:focus{
+  outline: 2px solid yellowgreen;
+}
+
+.login-button{
+  margin-top: 30px;
+}
+
+.field{
+  font-family: 'Inter';
+  font-weight: 900;
+}
+
+.new-account{
+text-decoration: underline;
+color: var(--color-yellow);
+}
 
 .banner {
   display: flex;
@@ -393,6 +499,8 @@ header{
   justify-items: center;
   margin-top: 100px;
   margin-inline:30px;
+  overflow: hidden;
+  width: fit-content;
 }
 
 .posters-slider a:not(a:first-child){
@@ -404,26 +512,41 @@ header{
   height: 700px;
 }
 
-.posters-button{
-  display: inline-flex;
-  justify-content: center;
-  align-items: center ;
-  width: 80px;
-  height: 38px;   
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 2;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: gray;
-  border: none;
-  border-radius: 30px;
+.posters-button {
+  background-color: #ffffff00;
+  color: #fff;
+  width: 7.5em;
+  height: 2.9em;
+  border: yellowgreen 0.2em solid;
+  border-radius: 11px;
+  display: flex;                  
+  align-items: center;           
+  justify-content: center;       
+  gap: 1.5em;                     
+  transition: all 0.6s ease;
 }
 
-.posters-button:hover{
-  background-color: var(--color-yellow);
+.posters-button:hover {
+  background-color: rgb(101, 142, 26);
+  cursor: pointer;
+}
+
+.posters-button svg {
+  width: 1.6em;
+  margin: 0;                    
+  transition: all 0.6s ease;
+}
+
+.posters-button.right:hover svg {
+  transform: translateX(10px);
+}
+
+.posters-button.left:hover svg {
+  transform: translateX(-10px);
+}
+
+.button-text {
+  margin: 0;
 }
 
 .contacts{
@@ -504,6 +627,8 @@ header{
         transform: translateY(-20px);
     }
 }
+
+
 
 @media(max-width:1656px){
   .banner-main-image {

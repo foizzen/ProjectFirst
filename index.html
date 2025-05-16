@@ -23,19 +23,6 @@
             <span style="--i:10">.</span>
         </div>
     </div>
-        <a href="index.html" class="header-logo">
-            <img src="./static/icons/Group-logo.svg" alt="hyperealist logo" loading="lazy" width="125", height="25">
-        </a>
-        <nav header-nav>
-            <li class="header-list">
-                <a class="header-item" href="#main">Main</a>
-                <a class="header-item" href="#posts">Posts</a>
-                <a class="header-item" href="#Contacts">Contacts</a>    
-            </li>
-        </nav>
-        <a href="#main" class="header-button">
-            <img src="./static/icons/home-svgrepo-com.svg" alt="" loading="lazy">
-        </a>
     <script>
         setTimeout(() => {
             setTimeout(() => {
@@ -47,7 +34,45 @@
                     preloader.classList.add = 'visually-hidden';
                 }, 500);
             }, 3000);})
-        </script>
+    </script>
+        <a href="index.html" class="header-logo">
+            <img src="./static/icons/Group-logo.svg" alt="hyperealist logo" loading="lazy" width="125", height="25">
+        </a>
+        <nav header-nav>
+            <li class="header-list">
+                <a class="header-item" href="#main">Main</a>
+                <a class="header-item" href="#posts">Posts</a>
+                <a class="header-item" href="#Contacts">Contacts</a>    
+            </li>
+        </nav>
+        <a href="#" class="header-login" id="open_pop-up" >
+            <img src="./static/icons/home-svgrepo-com.svg" alt="" loading="lazy">
+        </a>
+        <div class="pop_up" id="popUP">
+            <div class="pop_up_container">
+                <div class="pop_up_body">
+                    <form class="pop_up_form">
+                        <p class="field">
+                            <label class="field__label" for="user-login">Login:</label>
+                            <input class="field__control" id="user-login" type="text">
+                        </p>
+
+                        <p class="field">
+                            <label class="field__label" for="user-password">Password:</label>
+                            <input class="field__control" type="password" id="user-password">
+                        </p>
+                        <button class="login-button" type="submit">submit</button>
+
+                        <p class="create-account field">
+                            <a class="new-account" href="">
+                                <p> Do you want to create an account? </p>
+                            </a>
+                        </p>
+                    </form>
+                    <div class="pop_up_close" id="close_pop-up">&#10006</div>
+                </div>
+            </div>
+        </div>
     </header>
     <main class="content " id="main">
         <h1 class="visually-hidden">hyperealist</h1>
@@ -69,7 +94,14 @@
         </section>
         <section class="posters" id="posts">
             <h2 class="visually-hidden">Posters slider</h2>
-            <button class="posters-button previous-button">previos</button>
+            <button class="posters-button previous-button left">
+                <div class="button-text"> Back </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15m0 0l6.75-6.75M4.5 12l6.75 6.75" />
+                </svg>
+
+            </button>
+
             <div class="posters-slider">
 
             </div>
@@ -85,10 +117,10 @@
 
 
                     result.innerHTML = json
-                    .map(({ href, clas, src, alt }) =>
+                    .map(({ href, src, alt }) =>
                     `
-                        <a href = "${href}" class ="${clas}">
-                        <img src = "${src}" alt = "${alt}" >
+                        <a href = "${href}" class ="slide" >
+                        <img src = "${src}" alt = "${alt}"  >
                         </a>
                     `)
                     .join('')
@@ -101,7 +133,13 @@
                 })
             </script>
             
-            <button class="posters-button next-button">next</button>
+            <button class="posters-button next-button right">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                </svg>
+
+                <div class="text"> Next </div>
+            </button>
         </section>
         <footer class="contacts" id="Contacts">
             <h2 class="visually-hidden"> Hyperealist contacts</h2>

@@ -46,10 +46,59 @@
         </a>
     </header>
     <main>
-        <div class="text-container">
-            <p class="main-text">Grand Theft Auto VI (GTA 6) is an upcoming action-adventure game developed by Rockstar Games. It is the latest installment in the critically acclaimed Grand Theft Auto series, known for its open-world gameplay and immersive storytelling. Set in a fictional version of Vice City (based on Miami), the game promises a vast and dynamic world, featuring both urban and rural environments. GTA 6 is expected to introduce new characters and a storyline centered around crime, betrayal, and power. The game will also feature enhanced graphics and a more detailed, interactive world compared to its predecessors. Although an official release date has not been confirmed, fans are eagerly anticipating its arrival, hoping for new innovations in gameplay and narrative depth.</p>
-        
-        </div>
+        <section class="image-container">
+            <div class="container">
+                <img src="./static/images/GTA6/gta6-1.webp">
+                <img src="./static/images/GTA6/gta6-2.webp">
+                <img src="./static/images/GTA6/gta6-3.webp">
+                <img src="./static/images/GTA6/gta6-4.webp">
+                <img src="./static/images/GTA6/gta6-5.webp">
+                <img src="./static/images/GTA6/gta6-6.webp">
+                <img src="./static/images/GTA6/gta6-7.webp">
+            </div>
+        </section>
+        <section class="main-info">
+            <div class="text-container">
+                <p class="main-text">Grand Theft Auto VI (GTA 6) is an upcoming action-adventure game developed by Rockstar Games. It is the latest installment in the critically acclaimed Grand Theft Auto series, known for its open-world gameplay and immersive storytelling. Set in a fictional version of Vice City (based on Miami), the game promises a vast and dynamic world, featuring both urban and rural environments. GTA 6 is expected to introduce new characters and a storyline centered around crime, betrayal, and power. The game will also feature enhanced graphics and a more detailed, interactive world compared to its predecessors. Although an official release date has not been confirmed, fans are eagerly anticipating its arrival, hoping for new innovations in gameplay and narrative depth.</p>
+            </div>
+        </section>
     </main>
+    <footer class="footer">
+        <div></div>
+
+        <div id="countdown">00:00:00:00</div>
+
+        <div class="waiting-people">
+            <p class="waiters"> Waiters: <br>  1221231 </p>
+            <button class="waiting-button">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front text"> Wait </span>
+            </button>
+        </div>
+
+        <div></div>
+
+        <script>
+            const releaseDate = new Date("May 26,2025, 00:00:00").getTime();
+            const timer = setInterval(()=>{
+            const now = new Date().getTime();
+            const distance = releaseDate - now;
+
+                if(distance < 0){
+                    clearInterval(timer);
+                    document.querySelector('#countdown').innerHTML = `<p class = "countdown-text"> Game is released </p>`
+                    return
+                }
+                const days    = Math.floor(distance / (1000 * 60 * 60 *24));
+                const hours   = Math.floor(distance % (1000 * 60 * 60 *24) / (1000 * 60 *60  ));
+                const minutes = Math.floor(distance % (1000 * 60 *60  ) / (1000 * 60));
+                const seconds = Math.floor(distance % (1000 * 60) / 1000);
+
+                document.querySelector('#countdown').innerHTML = `<p class = "countdown-text"> Time until release: <br> ${days}d ${hours}h ${minutes}m ${seconds}s </p>`;
+            },1000);
+        </script>
+    </footer>
+
 </body>
 </html>
