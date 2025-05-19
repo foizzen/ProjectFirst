@@ -36,13 +36,13 @@ func CreateJWT(usr *User) (*Token, error) {
 	if err != nil {
 		return nil, fmt.Errorf("token payload error: %s", err)
 	}
-	tkn.payload = []byte(base64.RawStdEncoding.EncodeToString(payload))
+	tkn.payload = []byte(base64.RawURLEncoding.EncodeToString(payload))
 
 	headers, err := json.Marshal(HFT{Method: "JWT", Type: "SHA256"})
 	if err != nil {
 		return nil, fmt.Errorf("token headers error: %s", err)
 	}
-	tkn.headers = []byte(base64.RawStdEncoding.EncodeToString(headers))
+	tkn.headers = []byte(base64.RawURLEncoding.EncodeToString(headers))
 	hash := sha256.New()
 	hash.Write(tkn.headers)
 	hash.Write(tkn.payload)
@@ -50,7 +50,7 @@ func CreateJWT(usr *User) (*Token, error) {
 		return nil, fmt.Errorf("can't get secret key")
 	}
 	hash.Write([]byte(os.Getenv("SECRET_KEY")))
-	tkn.signature = hash.Sum(nil)
+	tkn.signature = []byte(base64.RawURLEncoding.EncodeToString(hash.Sum(nil)))
 	return tkn, nil
 }
 
@@ -59,7 +59,7 @@ func CheckJWT(stkn string) (bool, error) {
 	comp := strings.Split(stkn, ".")
 	tkn := &Token{}
 	var err error
-	tkn.headers, err = base64.RawStdEncoding.DecodeString(comp[0])
+	tkn.headers, err = base64.RawURLEncoding.DecodeString(comp[0])
 	if err != nil {
 		return false, fmt.Errorf("headers decode err: %s", err)
 	}
@@ -71,7 +71,7 @@ func CheckJWT(stkn string) (bool, error) {
 	if (head.Method != "SHA256") || (head.Type != "JWT") {
 		return false, nil
 	}
-	tkn.payload, err = base64.RawStdEncoding.DecodeString(comp[1])
+	tkn.payload, err = base64.RawURLEncoding.DecodeString(comp[1])
 	if err != nil {
 		return false, fmt.Errorf("payload decode err: %s", err)
 	}
@@ -79,7 +79,7 @@ func CheckJWT(stkn string) (bool, error) {
 	sig.Write(tkn.headers)
 	sig.Write(tkn.payload)
 	sig.Write([]byte(os.Getenv("SECRET_KEY")))
-	tkn.signature = sig.Sum(nil)
+	tkn.signature = []byte(base64.RawURLEncoding.EncodeToString(sig.Sum(nil)))
 	if strings.Compare(string(tkn.signature), comp[2]) == 0 {
 		return true, nil
 	} else {
@@ -90,7 +90,7 @@ func CheckJWT(stkn string) (bool, error) {
 // Gets user_id from the token. It return 0 if something wrong
 func GetUserid(tkn string) int {
 	comp := strings.Split(tkn, ".")
-	data, err := base64.RawStdEncoding.DecodeString(comp[2])
+	data, err := base64.RawURLEncoding.DecodeString(comp[2])
 	if err != nil {
 		return 0
 	}

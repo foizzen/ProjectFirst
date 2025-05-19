@@ -46,7 +46,7 @@ func (a *App) Games(w http.ResponseWriter, r *http.Request) {
 	gamesAns := make([]GamesAns, 0)
 	for _, game := range games {
 		gam := GamesAns{
-			Href: fmt.Sprintf("/games/%d", game.Id), 
+			Href: fmt.Sprintf("/games/%d/", game.Id), 
 			Src:  fmt.Sprintf("/static/images/Games/%s", game.Images_url[0]), 
 			Alt:  game.Images_dir,
 		}
@@ -172,12 +172,12 @@ func (a *App) Log(w http.ResponseWriter, r *http.Request) {
 	res := SearchUser(a.DB, usr)
 	if res == 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "password incorrect: %s", err)
+		fmt.Fprintf(w, "password incorrect")
 		return
 	}
 	if res == -1 {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "user don't exist: %s", err)
+		fmt.Fprintf(w, "user don't exist")
 		return
 	}
 	JWTtoken, err := CreateJWT(usr)
@@ -218,6 +218,7 @@ func (a *App) Reg(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "busy username: %s", err)
+		return
 	}
 	JWTtoken, err := CreateJWT(usr)
 	if err != nil {
@@ -239,6 +240,7 @@ func (a *App) Logout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	cook.Expires = time.Now().AddDate(0, 0, -1)
+	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
 
 type Waiter struct {
@@ -255,7 +257,7 @@ func (a *App) AddWaiter(w http.ResponseWriter, r *http.Request) {
 
 	c, _ := r.Cookie("tokenproj")
 	comp := strings.Split(c.Value, ".")
-	d, err := base64.RawStdEncoding.DecodeString(comp[1])
+	d, err := base64.RawURLEncoding.DecodeString(comp[1])
 	if err != nil {
 		panic(fmt.Errorf("can't decode paylodad of token: %s", err))
 	}
