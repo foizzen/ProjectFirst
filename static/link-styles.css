@@ -373,8 +373,17 @@ header{
   gap: 15px;
 }
 
-.container img{
+.container.over-four img{
   width: 11%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid whitesmoke;
+  transition: all ease-in-out 0.5s;
+}
+
+.container.under-four img{
+  width: 20%;
   height: 100%;
   object-fit: cover;
   border-radius: 10px;

@@ -48,14 +48,26 @@
     <main>
         <section class="image-container">
             <div class="container">
-                <img src="./static/images/GTA6/gta6-1.webp">
-                <img src="./static/images/GTA6/gta6-2.webp">
-                <img src="./static/images/GTA6/gta6-3.webp">
-                <img src="./static/images/GTA6/gta6-4.webp">
-                <img src="./static/images/GTA6/gta6-5.webp">
-                <img src="./static/images/GTA6/gta6-6.webp">
-                <img src="./static/images/GTA6/gta6-7.webp">
+                <img src="./static/images/Games/GTA_6/gta6-1.webp">
+                <img src="./static/images/Games/GTA_6/gta6-2.webp">
+                <img src="./static/images/Games/GTA_6/gta6-3.webp">
+                <img src="./static/images/Games/GTA_6/gta6-4.webp">
+                <img src="./static/images/Games/GTA_6/gta6-5.webp">
+                <img src="./static/images/Games/GTA_6/gta6-6.webp">
+                <img src="./static/images/Games/GTA_6/gta6-7.webp">
             </div>
+            
+            <script>
+                const container = document.querySelector('.container')
+                const containerElements = container.querySelectorAll('img')
+                if(containerElements.length <= 4){
+                    container.classList.add('under-four')
+                }
+                if(containerElements.length > 4){
+                    container.classList.add('over-four')
+                }
+            </script>
+
         </section>
         <section class="main-info">
             <div class="text-container">
@@ -80,7 +92,7 @@
         <div></div>
 
         <script>
-            const releaseDate = new Date("May 26,2025, 00:00:00").getTime();
+            const releaseDate = new Date("May 26,2026, 00:00:00").getTime();
             const timer = setInterval(()=>{
             const now = new Date().getTime();
             const distance = releaseDate - now;

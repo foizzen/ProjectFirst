@@ -373,16 +373,31 @@ header{
   left: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 80%);
-  z-index: 2;
+  z-index: 5;
 }
 
 .pop_up.is-active{
   display: block;
 }
 
+.pop_up-registration{
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 80%);
+  z-index: 5;
+}
+
+.pop_up-registration.is-active{
+  display: block;
+}
+
 .pop_up_close{
   position: absolute;
-  top: 15px;
+  top: 8px;
   right:15px ;
   color: white;
   font-size: 21px;
@@ -406,6 +421,17 @@ header{
   border: 2px solid yellowgreen;
 }
 
+.pop_up_body-registration{
+  margin: auto;
+  width: 425px;
+  height: 475px;
+  background-color: #000;
+  border-radius: 15px;
+  text-align: center;
+  position: relative;
+  border: 2px solid yellowgreen;
+}
+
 .pop_up_form{
   display: flex;
   flex-direction: column;
@@ -413,6 +439,7 @@ header{
   margin: 30px;
   padding: 20px;
 }
+
 
 .field {
 display: flex;
@@ -445,6 +472,7 @@ margin-block: 0;
 }
 
 .new-account{
+padding-top: 15px;
 text-decoration: underline;
 color: var(--color-yellow);
 }
@@ -628,6 +656,25 @@ color: var(--color-yellow);
     }
 }
 
+.field:has([required]) .field__label::after,
+.radios:has([required]) .radios__legend::after {  
+padding-inline: 0.25em;
+color: red;
+}
+
+.field__errors {
+display: flex;
+flex-direction: column;
+row-gap: 0.4em;
+margin-top: 0.5em;
+font-size: 0.8em;
+color: red;
+line-height: 1.25;
+}
+
+.field__errors:empty {
+display: none;
+}
 
 
 @media(max-width:1656px){

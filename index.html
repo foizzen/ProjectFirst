@@ -35,10 +35,10 @@
                 }, 500);
             }, 3000);})
     </script>
-        <a href="index.html" class="header-logo">
+        <a href="/" class="header-logo">
             <img src="./static/icons/Group-logo.svg" alt="hyperealist logo" loading="lazy" width="125", height="25">
         </a>
-        <nav header-nav>
+        <nav class="header-nav">
             <li class="header-list">
                 <a class="header-item" href="#main">Main</a>
                 <a class="header-item" href="#posts">Posts</a>
@@ -48,24 +48,27 @@
         <a href="#" class="header-login" id="open_pop-up" >
             <img src="./static/icons/home-svgrepo-com.svg" alt="" loading="lazy">
         </a>
+        <!-- login -->
         <div class="pop_up" id="popUP">
             <div class="pop_up_container">
                 <div class="pop_up_body">
-                    <form class="pop_up_form">
+                    <form class="pop_up_form" id="pop_up_form-login" novalidate data-js-form>
                         <p class="field">
-                            <label class="field__label" for="user-login">Login:</label>
-                            <input class="field__control" id="user-login" type="text">
+                            <label class="field__label" for="user-login-login">Login:</label>
+                            <input class="field__control" id="user-login-login" name="username" required type="text" minlength="3" maxlength="12">
+                            <span class="field__errors" id="login-errors" data-js-form-field-errors></span>
                         </p>
 
                         <p class="field">
-                            <label class="field__label" for="user-password">Password:</label>
-                            <input class="field__control" type="password" id="user-password">
+                            <label class="field__label" for="user-password-login">Password:</label>
+                            <input class="field__control" type="password" id="user-password-login" name="password" required minlength="4" maxlength="16">
+                            <span class="field__errors" id="password-errors" data-js-form-field-errors></span>
                         </p>
-                        <button class="login-button" type="submit">submit</button>
+                        <button class="login-button" id="login-button" type="submit">Submit</button>
 
                         <p class="create-account field">
-                            <a class="new-account" href="">
-                                <p> Do you want to create an account? </p>
+                            <a class="new-account" href="#" id="open_reg_pop-up">
+                                Do you want to create an account? 
                             </a>
                         </p>
                     </form>
@@ -73,6 +76,34 @@
                 </div>
             </div>
         </div>
+        <!-- registration -->
+        <div class="pop_up-registration" id="popUP_reg">
+            <div class="pop_up_container">
+                <div class="pop_up_body-registration">
+                    <form class="pop_up_form" id="pop_up_form-registration" novalidate data-js-form>
+                        <p class="field">
+                            <label class="field__label" for="user-login-registration">Login:</label>
+                            <input class="field__control" id="user-login-registration" name="username" required type="text" minlength="3" maxlength="12">
+                            <span class="field__errors" id="login-errors" data-js-form-field-errors></span>
+                        </p>
+
+                        <p class="field">
+                            <label class="field__label" for="user-password-registration1">Password:</label>
+                            <input class="field__control" type="password" id="user-password-registration1" name="password1" required minlength="4" maxlength="16">
+                            <span class="field__errors" id="password-errors" data-js-form-field-errors></span>
+                        </p>
+                        <p class="field">
+                            <label class="field__label" for="user-password-registration2">Password repeat:</label>
+                            <input class="field__control" type="password" id="user-password-registration2" name="password2" required minlength="4" maxlength="16">
+                            <span class="field__errors" id="password-errors" data-js-form-field-errors></span>
+                        </p>
+                        <button class="login-button" id="registration-button" type="submit">Submit</button>
+                    </form>
+                    <div class="pop_up_close" id="close_pop-up-reg">&#10006</div>
+                </div>
+            </div>
+        </div>
+
     </header>
     <main class="content " id="main">
         <h1 class="visually-hidden">hyperealist</h1>
@@ -108,13 +139,24 @@
             <script>
                 const result = document.querySelector('.posters-slider')
 
-                fetch(`http://localhost:3000/profile`)
+                fetch(`/profile`)
                 .then (response => {
+
+                    if(!response.ok) {
+                        const errorText = response.text 
+                        const errorMessage = response.status === 404
+                        ? `Пост по указаному идентификатору не найдена -- ошибка ${response.status}`
+                        : `Что-то пошло не так :( -- ошибка ${response.status}`
+
+                        console.log(response.text)
+
+                        throw new Error (errorMessage)
+                    }
+
                     return response.json() 
                 })
                 .then((json) => {
                     console.log(json)
-
 
                     result.innerHTML = json
                     .map(({ href, src, alt }) =>
@@ -127,8 +169,7 @@
                 })
                 .catch ((error) =>{
                     console.log('error:', error)
-                    
-                    result.innerHTML = `<h1>Oops, something wrong.<br>Please reload the site</h1>`
+                    result.innerHTML = `<h1>Oops, something went wrong.<br>Please reload the site</h1>`
                     
                 })
             </script>
@@ -146,7 +187,7 @@
             <div class="footer-header">
                 <div class="contacts-text">
                     <p class="contatcs-private">Privacy Policy</p>
-                    <p class="contatcs-private">Cookie policy</p>
+                    <p class="contatcs-private">Cookie Settings</p>
                     <p class="contatcs-private">Terms and conditions</p>
                     <p class="contatcs-private">© 2025 Hyperealist</p>
                 </div>
