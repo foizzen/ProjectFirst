@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/link-styles.css">
+    <title>{{.Game_name}}</title>
+</head>
+<body> 
+    <div class="preloader-wave">
+        <div class="wave">
+            <span style="--i:1">L</span>
+            <span style="--i:2">o</span>
+            <span style="--i:3">a</span>
+            <span style="--i:4">d</span>
+            <span style="--i:5">i</span>
+            <span style="--i:6">n</span>
+            <span style="--i:7">g</span>
+            <span style="--i:8">.</span>
+            <span style="--i:9">.</span>
+            <span style="--i:10">.</span>
+        </div>
+    </div>
+    <script>
+    setTimeout(() => {
+        setTimeout(() => {
+            const preloader = document.querySelector('.preloader-wave');
+            preloader.style.transition = 'opacity 0.5s ease';
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                preloader.classList.add = 'visually-hidden';
+            }, 500);
+        }, 3000);})
+    </script>
+
+    <header>
+        <a href="/" class="header-logo">
+            <img src="/static/icons/Group-logo.svg" alt="hyperealist logo" loading="lazy" width="125", height="25">
+        </a>
+        <h1 class="game-name">
+            {{.Game_name}}
+        </h1>
+        <a href="/" class="header-button">
+            <img src="/static/icons/home-svgrepo-com.svg" alt="Home button" loading="lazy" width="40", height="40">
+        </a>
+    </header>
+    <main>
+        <section class="image-container">
+            <div class="container">
+                {{range .Images_url}}
+                <img src="/static/images/Games/{{.}}">
+                {{end}}
+            </div>
+        </section>
+        <section class="main-info">
+            <div class="text-container">
+                <p class="main-text">{{.Game_post_content}}</p>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div></div>
+
+        <div id="countdown">00:00:00:00</div>
+
+        <div class="waiting-people">
+            <p class="waiters"> Waiters: <br>  {{.Waitings}} </p>
+            <button class="waiting-button">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front text"> Wait </span>
+            </button>
+        </div>
+
+        <div></div>
+
+        <script>
+            const releaseDate = new Date("May 26,2025, 00:00:00").getTime();
+            const timer = setInterval(()=>{
+            const now = new Date().getTime();
+            const distance = releaseDate - now;
+
+                if(distance < 0){
+                    clearInterval(timer);
+                    document.querySelector('#countdown').innerHTML = `<p class = "countdown-text"> Game is released </p>`
+                    return
+                }
+                const days    = Math.floor(distance / (1000 * 60 * 60 *24));
+                const hours   = Math.floor(distance % (1000 * 60 * 60 *24) / (1000 * 60 *60  ));
+                const minutes = Math.floor(distance % (1000 * 60 *60  ) / (1000 * 60));
+                const seconds = Math.floor(distance % (1000 * 60) / 1000);
+
+                document.querySelector('#countdown').innerHTML = `<p class = "countdown-text"> Time until release: <br> ${days}d ${hours}h ${minutes}m ${seconds}s </p>`;
+            },1000);
+        </script>
+    </footer>
+
+</body>
+</html>

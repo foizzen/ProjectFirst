@@ -4,26 +4,33 @@ import (
 	"ProjectFirst/internal"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 func main() {
+	os.Stderr, _ = os.OpenFile("logs.log", os.O_RDWR | os.O_CREATE, 0644) 
 	serv := http.NewServeMux()
 	db, err := internal.GetDb()
 	if err != nil {
 		panic(err)
 	}
 	app := &internal.App{DB: db}
+	mdls := internal.Middles{Middlewares: []internal.Middleware{internal.MiddleRecoverLog}}	
+	mdls_protected := mdls.Group(internal.MiddleAuth)
 
 	// connecting handlers + middlewares:
-	// serv.HandleFunc("/post/{id}", )
-	serv.Handle("/post/create", http.HandlerFunc(app.CreateGame))
-	serv.Handle("/post/{id}/edit", http.HandlerFunc(app.EditGame))
-	serv.Handle("/post/{id}/add", http.HandlerFunc(app.EditGame))
-	serv.Handle("/login", http.HandlerFunc(app.Log))
-	serv.Handle("/reg", http.HandlerFunc(app.Log))  // ??
-	// serv.HandleFunc("/logout", )
-	serv.Handle("/profile", http.HandlerFunc(app.Games))
-	serv.Handle("/", http.HandlerFunc(app.Mainpage))
+	serv.Handle("/games/create",    mdls.Handle(http.HandlerFunc(app.CreateGame)))
+	serv.Handle("/games/{id}/edit", mdls.Handle(http.HandlerFunc(app.EditGame)))
+	
+	serv.Handle("/games/{id}/add",  mdls_protected.Handle(http.HandlerFunc(app.AddWaiter)))
+	serv.Handle("/games/{id}/",     mdls.Handle(http.HandlerFunc(app.SomeGame)))
+
+	serv.Handle("/login",  mdls.Handle(http.HandlerFunc(app.Log)))
+	serv.Handle("/reg",    mdls.Handle(http.HandlerFunc(app.Reg)))  
+	serv.Handle("/logout", mdls.Handle(http.HandlerFunc(app.Logout)))
+
+	serv.Handle("/profile", mdls.Handle(http.HandlerFunc(app.Games)))
+	serv.Handle("/",        mdls.Handle(http.HandlerFunc(app.Mainpage)))
 
 	statichandler := http.StripPrefix("/static/", http.FileServer(http.Dir("./static")))
 	serv.Handle("/static/", statichandler)

@@ -1,88 +1,55 @@
 package internal
 
 import (
-	"crypto/sha256"
-	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 )
 
-type Token struct {
-	headers   []byte
-	payload   []byte
-	signature []byte
+type Middleware func(http.Handler) http.Handler
+
+type Middles struct {
+    Middlewares []Middleware
 }
 
-func (t *Token) String() string {
-	return string(t.headers)+"."+string(t.payload)+"."+string(t.signature)
+func (midls *Middles) Add(mid Middleware) {
+	midls.Middlewares = append(midls.Middlewares, mid)
 }
 
-type PFT struct {
-	Username string `json:"username"`
+func (midls *Middles) Handle(handler http.Handler) http.Handler {
+	for _, mdwr := range midls.Middlewares {
+		handler = mdwr(handler)
+	}
+	return handler
 }
 
-type HFT struct {
-	Method string `json:"alg"`
-	Type   string `json:"typ"`
+type Group struct {
+	Middlewares []Middleware
 }
 
-func CreateJWT(usr *User) (*Token, error) {
-	tkn := &Token{}
-	payload, err := json.Marshal(PFT{usr.Username})
-	if err != nil {
-		return nil, fmt.Errorf("token payload error: %s", err)
-	}
-	base64.RawStdEncoding.Encode(tkn.payload, payload)
-
-	headers, err := json.Marshal(HFT{Method: "JWT", Type: "SHA256"})
-	if err != nil {
-		return nil, fmt.Errorf("token headers error: %s", err)
-	}
-	base64.RawStdEncoding.Encode(tkn.headers, headers)
-	hash := sha256.New()
-	hash.Write(tkn.headers)
-	hash.Write(tkn.payload)
-	if os.Getenv("SECRET_KEY") == "" {
-		return nil, fmt.Errorf("can't get secret key")
-	}
-	hash.Write([]byte(os.Getenv("SECRET_KEY")))
-	tkn.signature = hash.Sum(nil)
-	return tkn, nil
+func (midls *Middles) Group(a... Middleware) *Group {
+	xd := Group{Middlewares: make([]Middleware, 0, len(a)+len(midls.Middlewares))}
+	xd.Middlewares = append(xd.Middlewares, midls.Middlewares...)
+	xd.Middlewares = append(xd.Middlewares, a...)
+	return &xd
 }
 
-func CheckJWT(stkn string) (bool, error) {
-	comp := strings.Split(stkn, ".")
-	tkn := &Token{}
-	var err error
-	tkn.headers, err = base64.RawStdEncoding.DecodeString(comp[0])
-	if err != nil {
-		return false, fmt.Errorf("headers decode err: %s", err)
+func (gr *Group) Handle(handler http.Handler) http.Handler {
+	for _, mdwr := range gr.Middlewares {
+		handler = mdwr(handler)
 	}
-	head := &HFT{}
-	err = json.Unmarshal(tkn.headers, head)
-	if err != nil {
-		return false, fmt.Errorf("error, not valid headers1: %s", err)
-	}
-	if (head.Method != "SHA256") || (head.Type != "JWT") {
-		return false, nil
-	}
-	tkn.payload, err = base64.RawStdEncoding.DecodeString(comp[1])
-	if err != nil {
-		return false, fmt.Errorf("payload decode err: %s", err)
-	}
-	sig := sha256.New()
-	sig.Write(tkn.headers)
-	sig.Write(tkn.payload)
-	sig.Write([]byte(os.Getenv("SECRET_KEY")))
-	tkn.signature = sig.Sum(nil)
-	if strings.Compare(string(tkn.signature), comp[2]) == 0 {
-		return true, nil
-	} else {
-		return false, nil
-	}
+	return handler
+}
+
+func (gr *Group) Add(mid Middleware) {
+	gr.Middlewares = append(gr.Middlewares, mid)
+}
+
+func (gr *Group) Group(a... Middleware) *Group {
+	xd := Group{Middlewares: make([]Middleware, 0, len(a)+len(gr.Middlewares))}
+	xd.Middlewares = append(xd.Middlewares, gr.Middlewares...)
+	xd.Middlewares = append(xd.Middlewares, a...)
+	return &xd
 }
 
 func MiddleAuth(hand http.Handler) http.Handler {
@@ -102,9 +69,14 @@ func MiddleAuth(hand http.Handler) http.Handler {
 	})
 }
 
-func MiddleLog(hand http.Handler) http.Handler {
+func MiddleRecoverLog(hand http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Print("AAAAAAAAAAa")
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Fprintf(os.Stderr, "recovered: %s \n\n", err)
+				w.WriteHeader(http.StatusInternalServerError)
+			}
+		} ()
 		hand.ServeHTTP(w, r)
 	})
 }
