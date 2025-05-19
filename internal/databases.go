@@ -18,16 +18,16 @@ type Game struct {
 	Images_dir        string   
 	Images_url        []string 
 	Game_post_content string
-	Date_realease     string
+	Date_realease     string   // Mounth day,year, 00:00:00
 	Waitings          int
 }
 
 type User struct {
 	Id        int
 	Pass_hash string
-	Username  string
+	Username  string `json:"username"`
 	Email     string
-	Password  string
+	Password  string `json:"password"`
 }
 
 // Conn to db and return it
@@ -89,7 +89,7 @@ func GetSomeGame(db *sql.DB, game_id int) (*Game, error) {
 			return nil, fmt.Errorf("error in Open image dir params %s", err)
 		}
 		for _, img := range images {
-			game.Images_url = append(game.Images_url, img.Name())
+			game.Images_url = append(game.Images_url, game.Images_dir+"/"+img.Name())
 		}
 	}
 	return game, nil
@@ -115,7 +115,7 @@ func GetGameWMW(db *sql.DB, lim int) ([]Game, error) {
 			return nil, fmt.Errorf("error in Open image dir params %s", err)
 		}
 		for _, img := range images {
-			game.Images_url = append(game.Images_url, img.Name())
+			game.Images_url = append(game.Images_url, game.Images_dir+"/"+img.Name())
 		}
 		games = append(games, game)
 	}
@@ -151,7 +151,7 @@ func DeleteWaiter(db *sql.DB, game_id int, user_id int) error {
 // Add User to db
 func AddUser(db *sql.DB, usr *User) error {
 	usr.Pass_hash = base64.RawStdEncoding.EncodeToString([]byte(usr.Password))
-	_, err := db.Exec(`INSERT INTO users (username, email, pass_hash) VALUES ($1, $2, $3)`, usr.Username, usr.Email, usr.Pass_hash)
+	err := db.QueryRow(`INSERT INTO users (username, email, pass_hash) VALUES ($1, $2, $3) RETURNING id`, usr.Username, usr.Email, usr.Pass_hash).Scan(&usr.Id)
 	if err != nil {
 		return fmt.Errorf("that username or email is busy: %s", err)
 	}
@@ -164,14 +164,14 @@ func AddUser(db *sql.DB, usr *User) error {
 // return 1  if user and pass correct.
 func SearchUser(db *sql.DB, usr *User) int8 {
 	usr.Pass_hash = base64.RawStdEncoding.EncodeToString([]byte(usr.Password))
-	rows, err := db.Query(`SELECT pass_hash FROM users WHERE username=$1`, usr.Username)
+	rows, err := db.Query(`SELECT id, pass_hash FROM users WHERE username=$1`, usr.Username)
 	if err != nil {
 		return -1
 	}
 	defer rows.Close()
 	var db_pass string
 	for rows.Next() {
-		err = rows.Scan(&db_pass)
+		err = rows.Scan(&usr.Id, &db_pass)
 		if err != nil {
 			return -1
 		}
