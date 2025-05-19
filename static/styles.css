@@ -347,7 +347,7 @@ header{
 
   content: attr(data-title);
   top:0.7em;
-  left:-6em;
+  left:-7em;
   line-height: 1;
   position: absolute;
   z-index: -1;
@@ -430,7 +430,7 @@ header{
 .pop_up_body{
   margin: auto;
   width: 400px;
-  height: 450px;
+  height: 475px;
   background-color: #000;
   border-radius: 15px;
   text-align: center;

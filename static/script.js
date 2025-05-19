@@ -180,13 +180,13 @@ loginFormElement.addEventListener('submit', (event) => {
         
         localStorage.setItem('username',  `${formDataObject.username}`)
 
+        window.location.reload()
 
         return response.json()
     }).catch((error) =>{ 
         console.log('Error:', error)
     })
 
-    window.location.reload()
 })
 
 
@@ -211,6 +211,11 @@ registrationFormElement.addEventListener('submit', (event) => {
         password:`${loginPassword}`,
     }
 
+    if(formDataObject.username.length <= 3 || loginPassword.length <= 4){
+        console.log('something')
+        return
+    }
+
     fetch('/reg', {
         method: 'post',
         body: JSON.stringify(formDataObjectFetch),
@@ -222,17 +227,18 @@ registrationFormElement.addEventListener('submit', (event) => {
 
         localStorage.setItem('username', `${formDataObjectFetch.username}`)
 
+        if(response.status === 200){
+            window.location.reload()
+        }
+        
+        if(response.status === 400){
+            buttonError.innerHTML = `<h3 class="pattern-mismatch">The username is busy</h3>`
+            return
+        }
 
         return response.json()
-    }).then ((json) => {
-
-        console.log('json:', json)
     }).catch((error) =>{ 
-        console.log('Error:', error)
+        console.log(error)
     })
 
-    window.location.reload();
-
 })
-
-

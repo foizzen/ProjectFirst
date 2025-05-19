@@ -153,7 +153,7 @@ func AddUser(db *sql.DB, usr *User) error {
 	usr.Pass_hash = base64.RawStdEncoding.EncodeToString([]byte(usr.Password))
 	err := db.QueryRow(`INSERT INTO users (username, pass_hash) VALUES ($1, $2) RETURNING id`, usr.Username, usr.Pass_hash).Scan(&usr.Id)
 	if err != nil {
-		return fmt.Errorf("that username or email is busy: %s", err)
+		return fmt.Errorf("that username is busy")
 	}
 	return nil
 }

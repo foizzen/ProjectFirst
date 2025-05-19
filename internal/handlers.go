@@ -217,7 +217,7 @@ func (a *App) Reg(w http.ResponseWriter, r *http.Request) {
 	err = AddUser(a.DB, usr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "busy username: %s", err)
+		fmt.Fprintf(w, "The username is busy")
 		return
 	}
 	JWTtoken, err := CreateJWT(usr)
