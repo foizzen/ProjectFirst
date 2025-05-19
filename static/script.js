@@ -9,12 +9,19 @@ const closePopUpLogin = document.querySelector('#close_pop-up')
 const loginButton = document.querySelector('#login-button')
 const loginFormElement = document.querySelector('#pop_up_form-login')
 
-
 const popUpRegistration = document.querySelector('#popUP_reg')
 const openPopUpRegistration = document.querySelector('#open_reg_pop-up')
 const closePopUpRegistration = document.querySelector('#close_pop-up-reg')
 const registrationButton = document.querySelector('#registration-button')
 const registrationFormElement = document.querySelector('#pop_up_form-registration')
+
+
+if(localStorage.username = 'is-logged-in'){
+    const userNickname = `${formDataObjectFetch.username}` || `${formDataObject.username}`
+
+    openPopUpLogin.classList.add('has-username')
+    openPopUpLogin.setAttribute('data-title', `${userNickname}`)
+}
 
 
 
@@ -151,6 +158,7 @@ loginFormElement.addEventListener('submit', (event) => {
     event.preventDefault()
     const formData = new FormData(loginFormElement)
     const formDataObject = Object.fromEntries(formData)
+    const buttonError = document.querySelector('#login-password-error')
 
     fetch('/login', {
         method: 'post',
@@ -162,13 +170,19 @@ loginFormElement.addEventListener('submit', (event) => {
 
         if(response.status != 200){
             console.log(response.text)
+            buttonError.innerHTML = `<h3 class="pattern-mismatch">Incorrect username or password</h3>`
+
             return
         }
+        
+
+        localStorage.setItem('username', 'is-logged-in')
 
         return response.json()
     }).catch((error) =>{ 
         console.log('Error:', error)
     })
+    return formDataObject.username
 })
 
 
@@ -177,19 +191,21 @@ registrationFormElement.addEventListener('submit', (event) => {
 
     const formData = new FormData(registrationFormElement)
     const formDataObject = Object.fromEntries(formData)
+    const buttonError = document.querySelector('#registration-password-error')
 
     if(formDataObject.password1 != formDataObject.password2){
         console.log('Something wrong')
+        
+        buttonError.innerHTML = `<h3 class="pattern-mismatch">Passwords don't match</h3>`
         return
     }
 
     const loginPassword = formDataObject.password1
         
     const formDataObjectFetch = {
-        login: `${formDataObject.username}`,
+        username: `${formDataObject.username}`,
         password:`${loginPassword}`,
     }
-
 
     fetch('/reg', {
         method: 'post',
@@ -200,12 +216,17 @@ registrationFormElement.addEventListener('submit', (event) => {
     }).then((response) => {
         console.log('response:', response)
 
+        localStorage.setItem('username', 'is-logged-in')
+
         return response.json()
     }).then ((json) => {
+
         console.log('json:', json)
     }).catch((error) =>{ 
         console.log('Error:', error)
     })
+
+    return formDataObjectFetch.username
 })
 
 

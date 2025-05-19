@@ -45,8 +45,8 @@
                 <a class="header-item" href="#Contacts">Contacts</a>    
             </li>
         </nav>
-        <a href="#" class="header-login" id="open_pop-up" >
-            <img src="./static/icons/home-svgrepo-com.svg" alt="" loading="lazy">
+        <a href="#" class="header-login backdrop-login" id="open_pop-up">
+            <img src="./static/icons/home-svgrepo-com.svg" alt="login and registration" loading="lazy">
         </a>
         <!-- login -->
         <div class="pop_up" id="popUP">
@@ -55,7 +55,7 @@
                     <form class="pop_up_form" id="pop_up_form-login" novalidate data-js-form>
                         <p class="field">
                             <label class="field__label" for="user-login-login">Login:</label>
-                            <input class="field__control" id="user-login-login" name="username" required type="text" minlength="3" maxlength="12">
+                            <input class="field__control" id="user-login-login" name="username" required type="text" minlength="3" maxlength="9">
                             <span class="field__errors" id="login-errors" data-js-form-field-errors></span>
                         </p>
 
@@ -65,7 +65,7 @@
                             <span class="field__errors" id="password-errors" data-js-form-field-errors></span>
                         </p>
                         <button class="login-button" id="login-button" type="submit">Submit</button>
-
+                        <span class="field__errors" id="login-password-error"></span>
                         <p class="create-account field">
                             <a class="new-account" href="#" id="open_reg_pop-up">
                                 Do you want to create an account? 
@@ -80,10 +80,10 @@
         <div class="pop_up-registration" id="popUP_reg">
             <div class="pop_up_container">
                 <div class="pop_up_body-registration">
-                    <form class="pop_up_form" id="pop_up_form-registration" novalidate data-js-form>
+                    <form class="pop_up_form-registration" id="pop_up_form-registration" novalidate data-js-form>
                         <p class="field">
                             <label class="field__label" for="user-login-registration">Login:</label>
-                            <input class="field__control" id="user-login-registration" name="username" required type="text" minlength="3" maxlength="12">
+                            <input class="field__control" id="user-login-registration" name="username" required type="text" minlength="3" maxlength="9">
                             <span class="field__errors" id="login-errors" data-js-form-field-errors></span>
                         </p>
 
@@ -98,6 +98,7 @@
                             <span class="field__errors" id="password-errors" data-js-form-field-errors></span>
                         </p>
                         <button class="login-button" id="registration-button" type="submit">Submit</button>
+                        <span class="field__errors" id="registration-password-error"></span>
                     </form>
                     <div class="pop_up_close" id="close_pop-up-reg">&#10006</div>
                 </div>

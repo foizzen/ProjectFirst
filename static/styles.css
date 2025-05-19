@@ -337,9 +337,26 @@ header{
 }
 
 .header-login{
+  position: relative;
   height: 40px;
   aspect-ratio: 1;
   flex-shrink: 0;
+}
+
+.header-login.has-username::before{
+
+  content: attr(data-title);
+  top:0.7em;
+  left:-6em;
+  line-height: 1;
+  position: absolute;
+  z-index: -1;
+  font-size:1em;
+  font-family: 'Inter';
+  font-weight: 900;
+  text-decoration: none;
+  color: var(--color-yellow);
+
 }
 
 .header-list{
@@ -440,6 +457,13 @@ header{
   padding: 20px;
 }
 
+.pop_up_form-registration{
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.2em;
+  margin: 25px;
+  padding: 0px;
+}
 
 .field {
 display: flex;
@@ -676,6 +700,9 @@ line-height: 1.25;
 display: none;
 }
 
+.pattern-mismatch{
+  color: red;
+}
 
 @media(max-width:1656px){
   .banner-main-image {
