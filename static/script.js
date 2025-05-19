@@ -16,12 +16,16 @@ const registrationButton = document.querySelector('#registration-button')
 const registrationFormElement = document.querySelector('#pop_up_form-registration')
 
 
-if(localStorage.username = 'is-logged-in'){
-    const userNickname = `${formDataObjectFetch.username}` || `${formDataObject.username}`
+if (localStorage.username === 'is-logged-in') {
+    const userNickname = 
+        (typeof formDataObjectFetch !== 'undefined' && formDataObjectFetch.username) || 
+        (typeof formDataObject !== 'undefined' && formDataObject.username) || ""
 
-    openPopUpLogin.classList.add('has-username')
-    openPopUpLogin.setAttribute('data-title', `${userNickname}`)
+
+    openPopUpLogin.classList.add('has-username');
+    openPopUpLogin.setAttribute('data-title', userNickname);
 }
+
 
 
 
