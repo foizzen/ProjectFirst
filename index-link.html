@@ -80,14 +80,15 @@
 
         <div id="countdown">00:00:00:00</div>
 
-        <div class="waiting-people">
+        <div class="waiting-people" id="waiters">
             <p class="waiters"> Waiters: <br>  1221231 </p>
-            <button class="waiting-button">
+            <button class="waiting-button" id="waiting-button" type="submit">
                 <span class="shadow"></span>
                 <span class="edge"></span>
                 <span class="front text"> Wait </span>
             </button>
         </div>
+
 
         <div></div>
 
@@ -96,8 +97,37 @@
             const timer = setInterval(()=>{
             const now = new Date().getTime();
             const distance = releaseDate - now;
+            
+            // const waiters = document.querySelector('#waiters') 
 
-                if(distance < 0){
+            // fetch(`http://localhost:3000/posts`) //something
+            //     .then (response => {
+
+            //         if(!response.ok) {
+
+            //             console.log(response.text)
+                        
+            //             throw new Error (errorMessage)
+            //         }
+
+            //         return response.json() 
+            //     })
+            //     .then((json) => {
+            //         console.log(json)
+
+            //         waiters.innerHTML = json
+            //         .map(({ views }) =>
+            //         `
+            //             <p class="waiters"> Waiters: <br>  ${views} </p>
+            //         `)
+            //         .join('')
+            //     })
+            //     .catch ((error) =>{
+            //         console.log('error:', error)
+                    
+            //     })
+            
+            if(distance < 0){
                     clearInterval(timer);
                     document.querySelector('#countdown').innerHTML = `<p class = "countdown-text"> Game is released </p>`
                     return
@@ -109,7 +139,16 @@
 
                 document.querySelector('#countdown').innerHTML = `<p class = "countdown-text"> Time until release: <br> ${days}d ${hours}h ${minutes}m ${seconds}s </p>`;
             },1000);
-        </script>
+
+            // if(localStorage.username !== ""){
+            //     const waitingButtonElement = document.querySelector('#waiting-button')
+
+            //     waitingButtonElement.addEventListener('submit', (event)=>{
+                    
+            //     }) 
+            //  }
+            
+        </script>  
     </footer>
 
 </body>

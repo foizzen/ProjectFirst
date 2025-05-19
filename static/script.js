@@ -16,16 +16,15 @@ const registrationButton = document.querySelector('#registration-button')
 const registrationFormElement = document.querySelector('#pop_up_form-registration')
 
 
-if (localStorage.username === 'is-logged-in') {
-    const userNickname = 
-        (typeof formDataObjectFetch !== 'undefined' && formDataObjectFetch.username) || 
-        (typeof formDataObject !== 'undefined' && formDataObject.username) || ""
+if (localStorage.username !== 'undefined') {
 
-
-    openPopUpLogin.classList.add('has-username');
-    openPopUpLogin.setAttribute('data-title', userNickname);
+    openPopUpLogin.classList.add('has-username')
+    openPopUpLogin.setAttribute('data-title', localStorage.username)
 }
 
+if (!localStorage.username || localStorage.username === 'undefined') {
+    openPopUpLogin.classList.remove('has-username');
+}
 
 
 
@@ -179,14 +178,15 @@ loginFormElement.addEventListener('submit', (event) => {
             return
         }
         
+        localStorage.setItem('username',  `${formDataObject.username}`)
 
-        localStorage.setItem('username', 'is-logged-in')
 
         return response.json()
     }).catch((error) =>{ 
         console.log('Error:', error)
     })
-    return formDataObject.username
+
+    window.location.reload()
 })
 
 
@@ -220,7 +220,8 @@ registrationFormElement.addEventListener('submit', (event) => {
     }).then((response) => {
         console.log('response:', response)
 
-        localStorage.setItem('username', 'is-logged-in')
+        localStorage.setItem('username', `${formDataObjectFetch.username}`)
+
 
         return response.json()
     }).then ((json) => {
@@ -230,7 +231,8 @@ registrationFormElement.addEventListener('submit', (event) => {
         console.log('Error:', error)
     })
 
-    return formDataObjectFetch.username
+    window.location.reload();
+
 })
 
 
