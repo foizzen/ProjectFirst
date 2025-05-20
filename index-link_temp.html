@@ -116,30 +116,30 @@
             const waitingButtonElement = document.querySelector('#waiting-button')
             const buttonError = document.querySelector('#button-error')
             const counter = document.querySelector('#counter')
-            let count = 0
+            let count = {{.Waitings}}
             
 
             waitingButtonElement.addEventListener('click', (event) => {
                 if (localStorage.username !== 'undefined' && localStorage.username !== "") {
+                    console.log('clicked')
                     fetch(`./add`, {})
                         .then (response => {
                             
                             if(!response.ok) {
-
-                                console.log(response.text)
-                                
-                                throw new Error (errorMessage)
+                                throw new Error ('Server error')
                             }
                                 
                             if(response.status === 200) {
                                 count++;
                                 counter.textContent = count;
-                            }
-                            if(response.status === 400) {
-                                console.log('zxdfvjhjbhvzxdfjbhvzhbbxbhj,')
+                                waitingButtonElement.disabled = true
+                                console.log('clicked there')
                             }
                             
-                            waitingButtonElement.disabled = true
+                            if (response.status === 400) {
+                                waitingButtonElement.disabled = true
+                            }
+                                
                         })
                         .catch ((error) =>{
                             console.log('error:', error)                                
