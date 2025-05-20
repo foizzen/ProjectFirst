@@ -211,7 +211,7 @@ registrationFormElement.addEventListener('submit', (event) => {
         password:`${loginPassword}`,
     }
 
-    if(formDataObject.username.length <= 3 || loginPassword.length <= 4){
+    if(formDataObject.username.length <= 3 || loginPassword.length < 4){
         console.log('something')
         return
     }
