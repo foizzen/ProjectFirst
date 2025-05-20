@@ -99,7 +99,7 @@ func GetSomeGame(db *sql.DB, game_id int) (*Game, error) {
 func GetGameWMW(db *sql.DB, lim int) ([]Game, error) {
 	var games []Game
 	rows, err := db.Query(`SELECT g.*, COUNT(w.user_id) AS waitings_count FROM Games AS g 
-	LEFT JOIN Waitings AS w ON g.id = w.game_id GROUP BY g.id LIMIT $1;`, lim)
+	LEFT JOIN Waitings AS w ON g.id = w.game_id GROUP BY g.id ORDER BY waitings_count DESC LIMIT $1;`, lim)
 	if err != nil {
 		return nil, fmt.Errorf("can't get %d Posts, Server error: %s", lim, err)
 	}
