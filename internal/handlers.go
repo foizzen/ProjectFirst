@@ -46,8 +46,8 @@ func (a *App) Games(w http.ResponseWriter, r *http.Request) {
 	gamesAns := make([]GamesAns, 0)
 	for _, game := range games {
 		gam := GamesAns{
-			Href: fmt.Sprintf("/games/%d/", game.Id), 
-			Src:  fmt.Sprintf("/static/images/Games/%s", game.Images_url[0]), 
+			Href: fmt.Sprintf("/games/%d/", game.Id),
+			Src:  fmt.Sprintf("/static/images/Games/%s", game.Images_url[0]),
 			Alt:  game.Images_dir,
 		}
 		gamesAns = append(gamesAns, gam)
@@ -235,12 +235,14 @@ func (a *App) Reg(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) Logout(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Cache-Control", "no-store")
 	cook, err := r.Cookie("tokenproj")
-	if err != nil {
-		return
+	if err == http.ErrNoCookie {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 	cook.Expires = time.Now().AddDate(0, 0, -1)
-	http.Redirect(w, r, "/", http.StatusMovedPermanently)
+	http.SetCookie(w, cook)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 type Waiter struct {
