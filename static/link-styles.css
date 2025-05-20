@@ -415,7 +415,7 @@ header{
 
 .waiting-people{
   display: grid;
-  grid-template-columns: 50% 40% 10%;
+  grid-template-columns: 45% 40% 15%;
   flex-direction: column;
   justify-content:center;
   align-items: center;
@@ -521,7 +521,7 @@ button:focus:not(:focus-visible) {
 
 footer{
   display: grid;
-  grid-template-columns: 10% 1fr 1fr 10%;
+  grid-template-columns: 10% 1fr 1fr 5% ;
   justify-content: center;
   text-align: center;
   margin-top: 20px;
@@ -538,10 +538,36 @@ footer{
   font-family: 'Inter';
 }
 
+.error{
+  width: 50px;
+  display: flex;
+  justify-content: left;
+  text-align: center;
+  transform: translateX(-200%);
+}
+
 .text-error{
   color: red;
-  font-size: 0.85em;
+  font-size: 16px;
   font-family: 'Inter';
   font-weight: 900;
 
+}
+
+@media(max-width:1500px){
+  .error{
+    transform: translateX(-150%);
+  }
+}
+
+@media(max-width:1300px){
+  .error{
+    transform: translateX(-100%);
+  }
+}
+
+@media(max-width:1170px){
+  .error{
+    transform: translateX(0);
+  }
 }
