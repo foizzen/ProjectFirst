@@ -68,10 +68,10 @@
             <script>
                 const container = document.querySelector('.container')
                 const containerElements = container.querySelectorAll('img')
-                if(containerElements.length <= 4){
+                if(containerElements.length <= 5){
                     container.classList.add('under-four')
                 }
-                if(containerElements.length > 4){
+                if(containerElements.length > 5){
                     container.classList.add('over-four')
                 }
             </script>
@@ -98,7 +98,7 @@
                 <span class="edge"></span>
                 <span class="front text"> Wait </span>
             </button>
-            <div class="button-error visually-hidden" id="button-error">
+            <div class="chiwawa visually-hidden" id="button-error">
                 <p class="text-error">Log in to use this feature</p>
             </div>
         </div>
@@ -120,33 +120,26 @@
             
 
             waitingButtonElement.addEventListener('click', (event) => {
-                if (localStorage.username !== 'undefined' && localStorage.username !== "") {
-                    console.log('clicked')
-                    fetch(`./add`, {})
-                        .then (response => {
+                fetch(`./add`, {})
+                    .then (response => {
                             
-                            if(!response.ok) {
-                                throw new Error ('Server error')
-                            }
-                                
-                            if(response.status === 200) {
-                                count++;
-                                counter.textContent = count;
-                                waitingButtonElement.disabled = true
-                                console.log('clicked there')
-                            }
+                        if(response.status === 200) {
+                            count++;
+                            counter.textContent = count;
+                            waitingButtonElement.disabled = true
+                        }
+                        
+                        if (response.status === 400) {
+                            waitingButtonElement.disabled = true
+                        }
                             
-                            if (response.status === 400) {
-                                waitingButtonElement.disabled = true
-                            }
-                                
-                        })
-                        .catch ((error) =>{
-                            console.log('error:', error)                                
-                        })
-                }else{
-                    buttonError.classList.remove('visually-hidden')
-                }
+                        if (response.status === 401) {
+                            buttonError.classList.remove("visually-hidden")
+                        }
+                    })
+                    .catch ((error) =>{
+                        console.log('error:', error)                                
+                    })
             })
             
             if(distance < 0){
