@@ -125,19 +125,22 @@
 
             waitingButtonElement.addEventListener('click', (event) => {
                 if (localStorage.username !== 'undefined' && localStorage.username !== "") {
-                    fetch(`/games/1/add`) 
+                    console.log('clicked')
+                    fetch(`./add`, {})
                         .then (response => {
                             
                             if(!response.ok) {
-
-                                console.log(response.text)
-                                
-                                throw new Error (errorMessage)
+                                throw new Error ('Server error')
                             }
                                 
                             if(response.status === 200) {
                                 count++;
                                 counter.textContent = count;
+                                waitingButtonElement.disabled = true
+                                console.log('clicked there')
+                            }
+                            
+                            if (response.status === 400) {
                                 waitingButtonElement.disabled = true
                             }
                                 
@@ -149,6 +152,8 @@
                     buttonError.classList.remove('visually-hidden')
                 }
             })
+
+
             
             if(distance < 0){
                     clearInterval(timer);
