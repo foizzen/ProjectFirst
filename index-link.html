@@ -41,9 +41,21 @@
         <h1 class="game-name">
             Grand Theft Auto VI
         </h1>
-        <a href="index.html" class="header-button">
+        <a href="index.html" class="header-button" id="username">
             <img src="./static/icons/home-svgrepo-com.svg" alt="Home button" loading="lazy" width="40", height="40">
         </a>
+        <script>
+            const headerButtonElement = document.querySelector('#username')
+            
+            if (localStorage.username !== 'undefined') {
+                headerButtonElement.classList.add('has-username')
+                headerButtonElement.setAttribute('data-title', localStorage.username)
+            }
+
+            if (!localStorage.username || localStorage.username === 'undefined') {
+                headerButtonElement.classList.remove('has-username');
+            }
+        </script>
     </header>
     <main>
         <section class="image-container">
@@ -80,13 +92,19 @@
 
         <div id="countdown">00:00:00:00</div>
 
-        <div class="waiting-people" id="waiters">
-            <p class="waiters"> Waiters: <br>  1221231 </p>
+        <div class="waiting-people">
+            <div class="waiters">
+                <p class="waiting-text"> Waiters: <br></p>
+                <span class="waiting-span" id="counter">0</span> <!-- Вместо 0 -->
+            </div>
             <button class="waiting-button" id="waiting-button" type="submit">
                 <span class="shadow"></span>
                 <span class="edge"></span>
                 <span class="front text"> Wait </span>
             </button>
+            <div class="button-error visually-hidden" id="button-error">
+                <p class="text-error">Log in to use this feature</p>
+            </div>
         </div>
 
 
@@ -98,34 +116,39 @@
             const now = new Date().getTime();
             const distance = releaseDate - now;
             
-            // const waiters = document.querySelector('#waiters') 
+            const waiters = document.querySelector('#waiter') 
+            const waitingButtonElement = document.querySelector('#waiting-button')
+            const buttonError = document.querySelector('#button-error')
+            const counter = document.querySelector('#counter')
+            let count = 0
+            
 
-            // fetch(`http://localhost:3000/posts`) //something
-            //     .then (response => {
+            waitingButtonElement.addEventListener('click', (event) => {
+                if (localStorage.username !== 'undefined' && localStorage.username !== "") {
+                    fetch(`/games/1/add`) 
+                        .then (response => {
+                            
+                            if(!response.ok) {
 
-            //         if(!response.ok) {
-
-            //             console.log(response.text)
-                        
-            //             throw new Error (errorMessage)
-            //         }
-
-            //         return response.json() 
-            //     })
-            //     .then((json) => {
-            //         console.log(json)
-
-            //         waiters.innerHTML = json
-            //         .map(({ views }) =>
-            //         `
-            //             <p class="waiters"> Waiters: <br>  ${views} </p>
-            //         `)
-            //         .join('')
-            //     })
-            //     .catch ((error) =>{
-            //         console.log('error:', error)
-                    
-            //     })
+                                console.log(response.text)
+                                
+                                throw new Error (errorMessage)
+                            }
+                                
+                            if(response.status === 200) {
+                                count++;
+                                counter.textContent = count;
+                                waitingButtonElement.disabled = true
+                            }
+                                
+                        })
+                        .catch ((error) =>{
+                            console.log('error:', error)                                
+                        })
+                }else{
+                    buttonError.classList.remove('visually-hidden')
+                }
+            })
             
             if(distance < 0){
                     clearInterval(timer);
@@ -139,14 +162,6 @@
 
                 document.querySelector('#countdown').innerHTML = `<p class = "countdown-text"> Time until release: <br> ${days}d ${hours}h ${minutes}m ${seconds}s </p>`;
             },1000);
-
-            // if(localStorage.username !== ""){
-            //     const waitingButtonElement = document.querySelector('#waiting-button')
-
-            //     waitingButtonElement.addEventListener('submit', (event)=>{
-                    
-            //     }) 
-            //  }
             
         </script>  
     </footer>

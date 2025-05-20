@@ -348,8 +348,25 @@ header{
   margin-inline: 20px;  
 }
 
+.header-button.has-username::before{
+
+  content: attr(data-title);
+  top:0.7em;
+  left:-7em;
+  line-height: 1;
+  position: absolute;
+  z-index: -1;
+  font-size:1em;
+  font-family: 'Inter';
+  font-weight: 900;
+  text-decoration: none;
+  color: var(--color-yellow);
+
+}
+
 .header-button{
-    margin-left: 70%;
+  position: relative;  
+  margin-left: 70%;
 }
 
 .text-container{
@@ -398,7 +415,7 @@ header{
 
 .waiting-people{
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 50% 40% 10%;
   flex-direction: column;
   justify-content:center;
   align-items: center;
@@ -515,3 +532,16 @@ footer{
     font-size: 32px;
 }
 
+.waiting-span,
+.waiting-text {
+  color: var(--color-yellow);
+  font-family: 'Inter';
+}
+
+.text-error{
+  color: red;
+  font-size: 16px;
+  font-family: 'Inter';
+  font-weight: 900;
+
+}
