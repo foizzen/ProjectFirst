@@ -63,7 +63,7 @@ func AddGame(db *sql.DB, game *Game) error {
 	if err != nil {
 		return fmt.Errorf("db INSERT problem: %s", err)
 	}
-	err = os.MkdirAll(game.Images_dir, os.ModePerm)
+	err = os.MkdirAll(fmt.Sprintf("static/images/Games/%s", game.Images_dir), os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("images_dir error: %s", err)
 	}
