@@ -38,7 +38,7 @@ func CreateJWT(usr *User) (*Token, error) {
 	}
 	tkn.payload = []byte(base64.RawURLEncoding.EncodeToString(payload))
 
-	headers, err := json.Marshal(HFT{Method: "JWT", Type: "SHA256"})
+	headers, err := json.Marshal(HFT{Method: "SHA256", Type: "JWT"})
 	if err != nil {
 		return nil, fmt.Errorf("token headers error: %s", err)
 	}
@@ -59,32 +59,33 @@ func CheckJWT(stkn string) (bool, error) {
 	comp := strings.Split(stkn, ".")
 	tkn := &Token{}
 	var err error
-	tkn.headers, err = base64.RawURLEncoding.DecodeString(comp[0])
+	tkn.headers = []byte(comp[0])
+	headers, err := base64.RawURLEncoding.DecodeString(comp[0])
 	if err != nil {
 		return false, fmt.Errorf("headers decode err: %s", err)
 	}
 	head := &HFT{}
-	err = json.Unmarshal(tkn.headers, head)
+	err = json.Unmarshal(headers, head)
 	if err != nil {
 		return false, fmt.Errorf("error, not valid headers1: %s", err)
 	}
 	if (head.Method != "SHA256") || (head.Type != "JWT") {
-		return false, nil
+		return false, fmt.Errorf("token govno))")
 	}
-	tkn.payload, err = base64.RawURLEncoding.DecodeString(comp[1])
-	if err != nil {
-		return false, fmt.Errorf("payload decode err: %s", err)
-	}
+	tkn.payload = []byte(comp[1])
 	sig := sha256.New()
 	sig.Write(tkn.headers)
 	sig.Write(tkn.payload)
+	if os.Getenv("SECRET_KEY") == "" {
+		return false, fmt.Errorf("can't get secret key")
+	}
 	sig.Write([]byte(os.Getenv("SECRET_KEY")))
 	tkn.signature = []byte(base64.RawURLEncoding.EncodeToString(sig.Sum(nil)))
 	if strings.Compare(string(tkn.signature), comp[2]) == 0 {
 		return true, nil
 	} else {
 		return false, nil
-	}
+	} 
 }
 
 // Gets user_id from the token. It return 0 if something wrong

@@ -60,56 +60,62 @@ func (a *App) Games(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) CreateGame(w http.ResponseWriter, r *http.Request) {
-	game := Game{}
-	que := r.URL.Query()
-	if que.Has("gn") {
-		game.Game_name = que.Get("gn")
+	if r.Method == http.MethodPost {
+		game := &Game{}
+		err := r.ParseForm()
+		if err != nil {
+			panic(fmt.Errorf("parseform err -- %s", err))
+		}
+		game.Game_name = r.FormValue("game_name")
+		game.Author_corp = r.FormValue("author_corp")
+		game.Images_dir = r.FormValue("images_dir")
+		game.Game_post_content = r.FormValue("game_post_content")
+		game.Date_realease = r.FormValue("date_realease")
+		err = AddGame(a.DB, game)
+		if err != nil {
+			panic(fmt.Errorf("addgame err -- %s", err))
+		}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
-	if que.Has("ac") {
-		game.Author_corp = que.Get("ac")
-	}
-	if que.Has("imd") {
-		game.Images_dir = que.Get("imd")
-	}
-	if que.Has("gpc") {
-		game.Game_post_content = que.Get("gpc")
-	}
-	if que.Has("dr") {
-		game.Date_realease = que.Get("dr")
-	}
-	err := AddGame(a.DB, &game)
+	temp, err := template.ParseFiles("lol.html")
 	if err != nil {
-		panic(fmt.Errorf("server error in adding game -- %s", err))
+		panic(fmt.Errorf("lol err in parse -- %s", err))
+	}
+	err = temp.Execute(w, nil)
+	if err != nil {
+		panic(fmt.Errorf("lol params err -- %s", err))
 	}
 }
 
 func (a *App) EditGame(w http.ResponseWriter, r *http.Request) {
-	game := Game{}
-	path := strings.Split(r.URL.Path, "/")
-	que := r.URL.Query()
-	var err error
-	game.Id, err = strconv.Atoi(path[2])
+	if r.Method == http.MethodPost {
+		game := &Game{}
+		err := r.ParseForm()
+		if err != nil {
+			panic(fmt.Errorf("parseform err -- %s", err))
+		}
+		game.Game_name = r.FormValue("game_name")
+		game.Author_corp = r.FormValue("author_corp")
+		game.Images_dir = r.FormValue("images_dir")
+		game.Game_post_content = r.FormValue("game_post_content")
+		game.Date_realease = r.FormValue("date_realease")
+		game.Id, err = strconv.Atoi(strings.Split(r.URL.Path, "/")[2])
+		if err != nil {
+			panic(fmt.Errorf("not valid path -- %s", err))
+		}
+		err = EditGame(a.DB, game)
+		if err != nil {
+			panic(fmt.Errorf("addgame err -- %s", err))
+		}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+	temp, err := template.ParseFiles("lol2.html")
 	if err != nil {
-		panic(fmt.Errorf("id in URL not valid -- %s", err))
+		panic(fmt.Errorf("lol2 err in parse -- %s", err))
 	}
-	if que.Has("gn") {
-		game.Game_name = que.Get("gn")
-	}
-	if que.Has("ac") {
-		game.Author_corp = que.Get("ac")
-	}
-	if que.Has("imd") {
-		game.Images_dir = que.Get("imd")
-	}
-	if que.Has("gpc") {
-		game.Game_post_content = que.Get("gpc")
-	}
-	if que.Has("dr") {
-		game.Date_realease = que.Get("dr")
-	}
-	err = EditGame(a.DB, &game)
+	err = temp.Execute(w, nil)
 	if err != nil {
-		panic(fmt.Errorf("server error in edit game -- %s", err))
+		panic(fmt.Errorf("lol2 params err -- %s", err))
 	}
 }
 
@@ -135,14 +141,13 @@ func (a *App) SomeGame(w http.ResponseWriter, r *http.Request) {
 		Images_url        []string
 		Game_post_content string
 		Waitings          int
-		// Date_realease     string
-		// Game_id           string
-		// User_id           string
+		Date_realease     string
 	}{
 		Game_name:         game.Game_name,
 		Images_url:        game.Images_url,
 		Game_post_content: game.Game_post_content,
 		Waitings:          game.Waitings,
+		Date_realease:     game.Date_realease,
 	})
 	if err != nil {
 		panic(fmt.Errorf("index-link params err -- %s", err))
@@ -187,8 +192,8 @@ func (a *App) Log(w http.ResponseWriter, r *http.Request) {
 	cook := &http.Cookie{
 		Name:     "tokenproj",
 		HttpOnly: true,
-		Expires: time.Now().Add(5 * time.Minute),
-		Value: JWTtoken.String(),
+		Expires:  time.Now().Add(4 * time.Hour),
+		Value:    JWTtoken.String(),
 	}
 	http.SetCookie(w, cook)
 	fmt.Fprint(w, "login successful")
@@ -227,8 +232,8 @@ func (a *App) Reg(w http.ResponseWriter, r *http.Request) {
 	cook := &http.Cookie{
 		Name:     "tokenproj",
 		HttpOnly: true,
-		Expires: time.Now().Add(5 * time.Minute),
-		Value: JWTtoken.String(),
+		Expires:  time.Now().Add(4 * time.Hour),
+		Value:    JWTtoken.String(),
 	}
 	http.SetCookie(w, cook)
 	fmt.Fprint(w, "reg + login successful")
@@ -251,10 +256,6 @@ type Waiter struct {
 }
 
 func (a *App) AddWaiter(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
 	wtr := &Waiter{}
 
 	c, _ := r.Cookie("tokenproj")
@@ -268,18 +269,10 @@ func (a *App) AddWaiter(w http.ResponseWriter, r *http.Request) {
 		panic(fmt.Errorf("can't unmarshal paylodad of token: %s", err))
 	}
 
-	bdy, err := io.ReadAll(r.Body)
-	defer r.Body.Close()
+	path := strings.Split(r.URL.Path, "/")
+	wtr.Game_id, err = strconv.Atoi(path[2])
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "can't read the request body: %s", err)
-		return
-	}
-	err = json.Unmarshal(bdy, wtr)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "can't unmarshall json in request: %s", err)
-		return
+		panic(err)
 	}
 
 	err = AddWaiter(a.DB, wtr.Game_id, wtr.User_id)

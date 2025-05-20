@@ -20,8 +20,8 @@ func main() {
 
 	// connecting handlers + middlewares:
 	serv.Handle("/games/create",    mdls.Handle(http.HandlerFunc(app.CreateGame)))
-	serv.Handle("/games/{id}/edit", mdls.Handle(http.HandlerFunc(app.EditGame)))
 	
+	serv.Handle("/games/{id}/edit", mdls.Handle(http.HandlerFunc(app.EditGame)))
 	serv.Handle("/games/{id}/add",  mdls_protected.Handle(http.HandlerFunc(app.AddWaiter)))
 	serv.Handle("/games/{id}/",     mdls.Handle(http.HandlerFunc(app.SomeGame)))
 
